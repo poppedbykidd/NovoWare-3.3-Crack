@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "orchardgui",
+	"version": "${version}",
+	"name": "Orchard GUI",
+	"description": "1:1 recreation of the Orchard click GUI (GUI only, no modules). Press Right Shift in game.",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"dev.orchardgui.OrchardGuiClient"
+		]
+	},
+	"mixins": [
+		"orchardgui.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.11",
+		"java": ">=21"
+	}
+}

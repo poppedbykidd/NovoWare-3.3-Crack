@@ -1,0 +1,5 @@
+*.bat text eol=crlf
+gradlew text eol=lf
+*.png binary
+*.otf binary
+*.jar binary
