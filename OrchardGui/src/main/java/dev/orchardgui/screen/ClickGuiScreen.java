@@ -33,6 +33,9 @@ public final class ClickGuiScreen extends Screen {
 	private float originY;
 	private float scale = 1;
 
+	// Right Shift only closes the GUI after it was released once, so the press (or key repeat)
+	// that opened the GUI can never close it straight away.
+	private boolean openKeyReleased;
 	private boolean leftDown = true;
 	private boolean rightDown = true;
 	private boolean resizing;
@@ -104,6 +107,11 @@ public final class ClickGuiScreen extends Screen {
 	/** Clicks are read straight from GLFW so this works across the 1.21.x input API changes. */
 	private void pollMouse(int mouseX, int mouseY) {
 		long handle = minecraft.getWindow().handle();
+
+		if (GLFW.glfwGetKey(handle, OPEN_KEY) != GLFW.GLFW_PRESS) {
+			openKeyReleased = true;
+		}
+
 		boolean left = GLFW.glfwGetMouseButton(handle, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
 		boolean right = GLFW.glfwGetMouseButton(handle, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;
 		double x = toDesignX(mouseX);
@@ -163,7 +171,10 @@ public final class ClickGuiScreen extends Screen {
 
 		if (!gui.isSearchFocused()) {
 			if (key == OPEN_KEY) {
-				onClose();
+				if (openKeyReleased) {
+					onClose();
+				}
+
 				return true;
 			}
 
